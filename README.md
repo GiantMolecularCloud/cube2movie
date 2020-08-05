@@ -69,3 +69,11 @@ cube2movie(cube,                          # image cube to convert to movie
 # Known Problems
 
 - First frame is not correctly set. For some reason, tight_layout only works from the second frame on even if init_func is set.
+
+
+# To Do
+
+- [] Add option to select the channels to be plotted instead of using the full cube. This should work with channel numbers, frequencies and velocities. The conversion between them is simple with the header information.
+- [] Add option to resample the cube, e.g. sum up five channels to get fewer frames with more action per frame.
+- [] Add option for static overlays such as contours that do not change from frame to frame.
+- [] Find out why the static parts of the plots (axes, labels) occasionally jitter a tiny bit. Compression artefact?
