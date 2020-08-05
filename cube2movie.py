@@ -29,8 +29,8 @@ def cube2movie(cube,
     # movie options
     out              = 'movie.mp4',
     fps              = 2,
-    dpi              = None,
-    bitrate          = None,
+    dpi              = 300,
+    bitrate          = 2500,
     codec            = 'h264',
     movie_kwargs     = {},
     # preview options
@@ -51,7 +51,9 @@ def cube2movie(cube,
         Default: []
 
     figsize : tuple
-        Size of the figure to show the channels in inches.
+        Size of the figure to show the channels in inches. If you find the movie to be blurry and
+        not as sharp as expected increase the figure size and maybe also increase dpi and bitrate.
+        The larger the figure, the slower the movie conversion.
         Default: (8,8)
     vmin/vmax : float
         Minimum and maximum of the color transfer function. The default "vmin=None", "vmax=None"
@@ -120,10 +122,11 @@ def cube2movie(cube,
         Resolution with which the movie is rendered in dots per inch. Uses the resolution set by
         matplotlibrc by default. For movies, a lower resolution than for static figures is usually
         fine.
-        Default: None
+        Default: 300
     bitrate : number
         Bitrate of the compressed movie in kilobits per second. Higher quality comes at the cost
-        of increased file size.
+        of increased file size. If you find the movie to be blurry rather increase the figure size
+        than the bitrate.
         Default: None
     codec : str
         Video codec to encode the movie data. For now, cube2movie uses ffmpeg as the encoder
@@ -158,6 +161,10 @@ def cube2movie(cube,
     NOTE: cube2movie supresses specific warnings from SpectralCube and ax.contour because they
     can be repeated for each channel spamming the terminal and causing extensive slow-downs. These
     warnings can be re-enabled by running cube2movie.restore_warnings('all').
+
+    NOTE: The first frame is always not correctly set up but from the second frame on everythings
+    works just fine. This has something to do with tight_layout which is required to remove extensive
+    whitespace.
     """
 
     from .CubeToMovie import CubeToMovie

@@ -37,8 +37,8 @@ class CubeToMovie:
         self.figsize = (8,8)
         self.fig = None
         self.ax  = None
-        self.xlabel = self.cube.header['ctype1']
-        self.ylabel = self.cube.header['ctype2']
+        self.xlabel = 'auto'
+        self.ylabel = 'auto'
 
         # map
         self.vmin = None
@@ -216,6 +216,9 @@ class CubeToMovie:
 
 
     def create_figure(self, channel):
+        """
+        TODO: figure out how to force mpl to draw already the first frame with tight_layout
+        """
         self.fig = plt.figure(figsize      = self.figsize,
                               tight_layout = True
                              )
@@ -224,6 +227,7 @@ class CubeToMovie:
                               slices     = ('x', 'y', channel)
                              )
         # self.fig.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
+        # plt.tight_layout()
 
 
     def plot_map(self, channel):
@@ -268,6 +272,10 @@ class CubeToMovie:
         """
         Set the axis labels.
         """
+        if self.xlabel == 'auto':
+            self.xlabel = self.cube.header['ctype1']
+        if self.ylabel == 'auto':
+            self.ylabel = self.cube.header['ctype2']
         self.ax.set_xlabel(self.xlabel)
         self.ax.set_ylabel(self.xlabel)
 
@@ -277,6 +285,8 @@ class CubeToMovie:
         """
         if self.show_cbar:
             self.cbar = self.fig.colorbar(self.map, **self.cbar_kwargs)
+            if self.cbarlabel == 'auto':
+                self.cbarlabel = self.cube.header['bunit']
             self.cbar.set_label(self.cbarlabel)
             self.cbar.add_lines(self.contour)
 
@@ -294,6 +304,27 @@ class CubeToMovie:
         self.channel_overlay(channel)
         self.set_axis_labels()
         self.show_colorbar()
+
+
+    # def init_channel(self):
+    #     global contour
+    #
+    #     self.map.set_array(self.cube[self.channels[0],:,:].value)
+    #
+    #     if self.contourlevels is not []:
+    #         for c in self.contour.collections:
+    #             c.remove()
+    #         self.contour = self.ax.contour(self.cube[self.channels[0],:,:].value,
+    #                              levels = self.contourlevels,
+    #                              colors = 'k',
+    #                              **self.contour_kwargs
+    #                             )
+    #
+    #     self.chan_olay = self.spectral_axis[self.channels[0]]
+    #     if self.channelunit != 'auto':
+    #         self.chan_olay = self.chan_olay.to(self.channelunit)
+    #     self.chanlabel.set_text(("{0:."+str(self.decimals)+"f}\,{1}").format(self.chan_olay.value,self.chan_olay.unit.to_string('latex_inline')))
+    #     return [self.map, self.contour, self.chanlabel]
 
 
     def plot_channel(self, channel):
