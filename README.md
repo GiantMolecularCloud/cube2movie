@@ -9,7 +9,12 @@ sys.path.append('/path/you/downloaded/cube2movie/to/')
 
 ## Requirements
 python: numpy, matplotlib, astropy, SpectralCube
+
 ffmpeg
+
+After installing ffmpeg, it may be necessary to explicitly set the path to ffmpeg so matplotlib can find it.
+Set `plt.rcParams['animation.ffmpeg_path'] = '/usr/bin/ffmpeg'` to the appropriate path returned by `which ffmpeg` in this case `/usr/bin/ffmpeg`.
+In most cases, it should work right out of the box.
 
 # Usage
 
