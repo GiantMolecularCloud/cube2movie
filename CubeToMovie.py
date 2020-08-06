@@ -222,12 +222,13 @@ class CubeToMovie:
             print("to "+str(self.percentiles[1])+"th percentile ("+str(self.vmax)+")")
 
 
-    # def select_channels(self):
-    #     """
-    #     Select the requested channels.
-    #     TODO: allow user input, add/average channels, resample cube
-    #     """
-    #     self.channels = np.arange(len(self.cube))
+    def select_channels(self,channels):
+        """
+        Select the requested channels.
+        TODO: allow user input, add/average channels, resample cube
+        """
+        self.channels = channels
+        print("Selecting channels "+str(self.channels))
 
 
     def create_figure(self, channel):

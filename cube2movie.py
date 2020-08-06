@@ -46,8 +46,10 @@ def cube2movie(cube,
            astropy.io.fits.hdu.image.PrimaryHDU
         The input cube to visualize.
     channels: list
-        The channels to plot in the movie. An empty list defaults to all channels in the cube.
-        NOT IMPLEMENTED YET.
+        The channels to plot in the movie. This currently supports only lists of channel numbers.
+        An empty list defaults to all channels in the cube.
+        TODO: allow seletion by velocity/frequency and resampling of the cube (e.g. sum/average
+        channels to get fewer frames in the movie).
         Default: []
 
     figsize : tuple
@@ -170,10 +172,7 @@ def cube2movie(cube,
     from .CubeToMovie import CubeToMovie
 
     cubemovie = CubeToMovie(cube)
-
-    # set channels
-    if channels != []:
-        raise NotImplementedError("Channel selection is not implemented yet. Can only plot all channels of the cube through 'channels=[]'.")
+    cubemovie.prepare_environment()
 
     # set figure properties
     cubemovie.figsize          = figsize
@@ -216,7 +215,7 @@ def cube2movie(cube,
     cubemovie.repeat           = repeat
     cubemovie.animation_kwargs = animation_kwargs
 
-    cubemovie.prepare_environment()
+    cubemovie.select_channels(channels)
     cubemovie.set_range()
     cubemovie.set_up_plot()
     cubemovie.animate()
