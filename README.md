@@ -82,3 +82,4 @@ cube2movie(cube,                          # image cube to convert to movie
 - [ ] Add option to resample the cube, e.g. sum up five channels to get fewer frames with more action per frame.
 - [ ] Add option for static overlays such as contours that do not change from frame to frame.
 - [ ] Find out why the static parts of the plots (axes, labels) occasionally jitter a tiny bit. Compression artefact?
+- [ ] dash negative contours
