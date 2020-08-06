@@ -27,7 +27,7 @@ class CubeToMovie:
         self.preview_movie = False
 
         # warnings
-        self.warningstatus = {'wcswarning': True, 'contourwarning': True}
+        self.warningstatus = {'wcswarning': True, 'contourwarning': True, 'OMPwarning': True}
 
         # data cube
         self.load_cube(cube)
@@ -129,7 +129,7 @@ class CubeToMovie:
         self.warningstatus['wcswarning'] = False
 
 
-    def supress_contour_warnings(self):
+    def supress_contourwarnings(self):
         warnings.filterwarnings('ignore', message="No contour levels were found within the data range.")
         warnings.warn("\nDisabled matplotlib missing contour warning. You may re-enable the warning with restore_warnings('contourwarning').\n",
                       UserWarning,
@@ -137,10 +137,19 @@ class CubeToMovie:
                      )
         self.warningstatus['contourwarning'] = False
 
+    def supress_OMPwarnings(self):
+        warnings.filterwarnings('ignore', message="OMP: Warning #181: OMP_STACKSIZE: ignored because KMP_STACKSIZE has been defined")
+        warnings.filterwarnings('ignore', message="OMP: Warning #181: GOMP_STACKSIZE: ignored because KMP_STACKSIZE has been defined")
+        warnings.warn("\nDisabled OMP/GOMP_STACKSIZE warnings of OMP. You may re-enable the warning with restore_warnings('OMPwarning').\n",
+                      UserWarning,
+                      stacklevel = 2
+                     )
+        self.warningstatus['OMPwarning'] = False
+
 
     def restore_warnings(self,types):
         if types=='all':
-            types = ['wcswarning','contourwarning']
+            types = ['wcswarning','contourwarning','OMPwarning']
         if not isinstance(type, (tuple,list)):
             types = [types]
         for t in types:
@@ -153,6 +162,11 @@ class CubeToMovie:
                 warnings.simplefilter('default', message="No contour levels were found within the data range.")
                 self.warningstatus['contourwarning': True]
                 print("Re-enabled contour warnings.")
+            if t=='OMPwarning':
+                warnings.filterwarnings('default', message="OMP: Warning #181: OMP_STACKSIZE: ignored because KMP_STACKSIZE has been defined")
+                warnings.filterwarnings('default', message="OMP: Warning #181: GOMP_STACKSIZE: ignored because KMP_STACKSIZE has been defined")
+                self.warningstatus['OMPwarning': True]
+                print("Re-enabled OMP warnings.")
 
 
     def prepare_environment(self):
@@ -161,7 +175,8 @@ class CubeToMovie:
         interactive mode as needed and further matplotlib settings set for a nice plot.
         """
         self.supress_wcswarnings()
-        self.supress_contour_warnings()
+        self.supress_contourwarnings()
+        self.supress_OMPwarnings()
         self.adjust_interactive()
         self.set_mpl_settings()
 
