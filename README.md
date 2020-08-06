@@ -80,6 +80,8 @@ cube2movie(cube,                          # image cube to convert to movie
 
 - [x] Add option to select the channels to be plotted instead of using the full cube. 
 = [ ] This should work with channel numbers, frequencies and velocities. The conversion between them is simple with the header information.
+- [ ] Add option to zoom the cube. Simplest implementation: give BLC and TRC pixel positions to draw subcube.
+- [ ] More advanced zooming: use arbitrary coordinate formats.
 - [ ] Add option to resample the cube, e.g. sum up five channels to get fewer frames with more action per frame.
 - [ ] Add option for static overlays such as contours that do not change from frame to frame.
 - [ ] Find out why the static parts of the plots (axes, labels) occasionally jitter a tiny bit. Compression artefact?
