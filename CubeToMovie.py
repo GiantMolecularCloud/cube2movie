@@ -27,7 +27,7 @@ class CubeToMovie:
         self.preview_movie = False
 
         # warnings
-        self.warningstatus = {'wcswarning': True, 'contourwarning': True, 'OMPwarning': True}
+        self.warningstatus = {'wcswarning': True, 'contourwarning': True}
 
         # data cube
         self.load_cube(cube)
@@ -137,19 +137,10 @@ class CubeToMovie:
                      )
         self.warningstatus['contourwarning'] = False
 
-    def supress_OMPwarnings(self):
-        warnings.filterwarnings('ignore', message="OMP: Warning #181: OMP_STACKSIZE: ignored because KMP_STACKSIZE has been defined")
-        warnings.filterwarnings('ignore', message="OMP: Warning #181: GOMP_STACKSIZE: ignored because KMP_STACKSIZE has been defined")
-        warnings.warn("\nDisabled OMP/GOMP_STACKSIZE warnings of OMP. You may re-enable the warning with restore_warnings('OMPwarning').\n",
-                      UserWarning,
-                      stacklevel = 2
-                     )
-        self.warningstatus['OMPwarning'] = False
-
 
     def restore_warnings(self,types):
         if types=='all':
-            types = ['wcswarning','contourwarning','OMPwarning']
+            types = ['wcswarning','contourwarning']
         if not isinstance(type, (tuple,list)):
             types = [types]
         for t in types:
@@ -162,11 +153,6 @@ class CubeToMovie:
                 warnings.simplefilter('default', message="No contour levels were found within the data range.")
                 self.warningstatus['contourwarning': True]
                 print("Re-enabled contour warnings.")
-            if t=='OMPwarning':
-                warnings.filterwarnings('default', message="OMP: Warning #181: OMP_STACKSIZE: ignored because KMP_STACKSIZE has been defined")
-                warnings.filterwarnings('default', message="OMP: Warning #181: GOMP_STACKSIZE: ignored because KMP_STACKSIZE has been defined")
-                self.warningstatus['OMPwarning': True]
-                print("Re-enabled OMP warnings.")
 
 
     def prepare_environment(self):
